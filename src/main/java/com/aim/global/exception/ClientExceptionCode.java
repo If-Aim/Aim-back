@@ -1,0 +1,19 @@
+package com.aim.global.exception;
+
+
+public enum ClientExceptionCode {
+    // 사용자
+    AUTH_BAD_CREDENTIALS,
+    AUTH_TOKEN_EMPTY,
+    ACCESS_TOKEN_EMPTY,
+    REFRESH_TOKEN_EMPTY,
+    AUTH_TOKEN_EXPIRED,
+    AUTH_TOKEN_INVALID,
+    AUTH_TOKEN_MISMATCH,
+    USER_NOT_FOUND,
+    ILLEGAL_ARGUMENT,
+    INTERNAL_SERVER_ERROR,
+    ALREADY_LOGGED_TOKEN,
+
+}
+
