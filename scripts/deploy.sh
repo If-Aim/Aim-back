@@ -3,9 +3,9 @@
 LOG_PATH=/home/ubuntu/deploy.log
 ERROR_LOG_PATH=/home/ubuntu/deploy_err.log
 
-BUILD_JAR=$(ls /home/ubuntu/app/aim/build/libs/aim-0.0.1-SNAPSHOT.jar)
+BUILD_JAR=$(ls /home/ubuntu/Aim-back/build/libs/aim-0.0.1-SNAPSHOT.jar)
 JAR_NAME=$(basename $BUILD_JAR)
-DEPLOY_PATH=/home/ubuntu/aim/
+DEPLOY_PATH=/home/ubuntu/Aim-back/
 
 echo ">>> ✅ 빌드 파일명: $JAR_NAME" >> $LOG_PATH
 
@@ -36,7 +36,7 @@ export DB_USERNAME=$(aws ssm get-parameter --name "/aim/DB_USERNAME" --with-decr
 # export SPOTIFY_LOCAL_REDIRECT_URI=$(aws ssm get-parameter --name "/mavve/SPOTIFY_LOCAL_REDIRECT_URI" --with-decryption --query "Parameter.Value" --output text)
 # export SPOTIFY_DEPLOY_REDIRECT_URI=$(aws ssm get-parameter --name "/mavve/SPOTIFY_DEPLOY_REDIRECT_URI" --with-decryption --query "Parameter.Value" --output text)
 export JWT_SECRET_KEY=$(aws ssm get-parameter --name "/aim/JWT_SECRET_KEY" --with-decryption --query "Parameter.Value" --output text)
-export FRONTEND_DOMAIN=$(aws ssm get-parameter --name "/mavve/FRONTEND_DOMAIN" --with-decryption --query "Parameter.Value" --output text)
+export FRONTEND_DOMAIN=$(aws ssm get-parameter --name "/aim/FRONTEND_DOMAIN" --with-decryption --query "Parameter.Value" --output text)
 
 
 DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
