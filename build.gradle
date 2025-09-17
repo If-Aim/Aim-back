@@ -49,6 +49,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
 
+jar {
+	enabled = false
+}
+
+bootJar {
+	enabled = true
+	archiveFileName = 'aim-0.0.1-SNAPSHOT.jar'
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
