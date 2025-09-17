@@ -30,7 +30,6 @@ jobs:
 
       - name: Build with Gradle
         run: |
-          cd ./aim
           chmod +x ./gradlew
           ./gradlew bootJar -x test
 
