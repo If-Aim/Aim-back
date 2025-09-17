@@ -4,7 +4,7 @@ spring:
 
   datasource:
     url: ${DB_URL}
-    username: ${DB_NAME}
+    username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
@@ -35,7 +35,7 @@ spring:
             user-name-attribute: id
 jwt:
   secret:
-    key: ${JWT_SECRET}
+    key: ${JWT_SECRET_KEY}
 logging:
   level:
     org.springframework.security: TRACE

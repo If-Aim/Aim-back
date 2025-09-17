@@ -50,7 +50,12 @@ dependencies {
 }
 
 jar {
+	enabled = false
+}
+
+bootJar {
 	enabled = true
+	archiveFileName = 'aim-0.0.1-SNAPSHOT.jar'
 }
 
 tasks.named('test') {
