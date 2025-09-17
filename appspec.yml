@@ -2,12 +2,18 @@ version: 0.0
 os: linux
 
 files:
-  - source: /
-    destination: /home/ubuntu/aim
+  - source: build/libs/
+    destination: /home/ubuntu/Aim-back/build/libs/
+    overwrite: yes
+  - source: scripts/
+    destination: /home/ubuntu/Aim-back/scripts/
+    overwrite: yes
+  - source: src/main/resources/
+    destination: /home/ubuntu/Aim-back/src/main/resources/
     overwrite: yes
 
 permissions:
-  - object: /
+  - object: /home/ubuntu/Aim-back
     pattern: "**"
     owner: ubuntu
     group: ubuntu
