@@ -15,6 +15,11 @@ public class AuthController {
 
     private final AuthService authService;
 
+    @GetMapping("/auth/test")
+    public ResponseEntity<Void> test(){
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/auth/login")
     @ResponseBody
     public ResponseEntity<Void> loginOrRegister(@RequestBody EmailLoginRequest request,
