@@ -20,10 +20,7 @@ else
   echo ">>> 실행중인 애플리케이션이 없습니다." >> $LOG_PATH
 fi
 
-echo ">>> 📂 JAR 복사 중..." >> $LOG_PATH
-cp $BUILD_JAR $DEPLOY_PATH
-
-
+echo ">>> 🔧 환경변수 설정 중..." >> $LOG_PATH
 export AWS_ACCESS_KEY=$(aws ssm get-parameter --name "/aim/AWS_ACCESS_KEY" --with-decryption --query "Parameter.Value" --output text)
 export AWS_SECRET_KEY=$(aws ssm get-parameter --name "/aim/AWS_SECRET_KEY" --with-decryption --query "Parameter.Value" --output text)
 export CLIENT_ID=$(aws ssm get-parameter --name "/aim/CLIENT_ID" --with-decryption --query "Parameter.Value" --output text)
@@ -31,13 +28,17 @@ export CLIENT_SECRET=$(aws ssm get-parameter --name "/aim/CLIENT_SECRET" --with-
 export DB_PASSWORD=$(aws ssm get-parameter --name "/aim/DB_PASSWORD" --with-decryption --query "Parameter.Value" --output text)
 export DB_URL=$(aws ssm get-parameter --name "/aim/DB_URL" --with-decryption --query "Parameter.Value" --output text)
 export DB_USERNAME=$(aws ssm get-parameter --name "/aim/DB_USERNAME" --with-decryption --query "Parameter.Value" --output text)
-# export REDIS_HOST=$(aws ssm get-parameter --name "/aim/REDIS_HOST" --with-decryption --query "Parameter.Value" --output text)
-# export S3_BUCKET_NAME=$(aws ssm get-parameter --name "/aim/S3_BUCKET_NAME" --with-decryption --query "Parameter.Value" --output text)
-# export SPOTIFY_LOCAL_REDIRECT_URI=$(aws ssm get-parameter --name "/mavve/SPOTIFY_LOCAL_REDIRECT_URI" --with-decryption --query "Parameter.Value" --output text)
-# export SPOTIFY_DEPLOY_REDIRECT_URI=$(aws ssm get-parameter --name "/mavve/SPOTIFY_DEPLOY_REDIRECT_URI" --with-decryption --query "Parameter.Value" --output text)
 export JWT_SECRET_KEY=$(aws ssm get-parameter --name "/aim/JWT_SECRET_KEY" --with-decryption --query "Parameter.Value" --output text)
 export FRONTEND_DOMAIN=$(aws ssm get-parameter --name "/aim/FRONTEND_DOMAIN" --with-decryption --query "Parameter.Value" --output text)
+export GOOGLE_REDIRECT_URI=$(aws ssm get-parameter --name "/aim/GOOGLE_REDIRECT_URI" --with-decryption --query "Parameter.Value" --output text)
+export S3_BUCKET_NAME=$(aws ssm get-parameter --name "/aim/S3_BUCKET_NAME" --with-decryption --query "Parameter.Value" --output text)
 
+echo ">>> 🔍 환경변수 확인..." >> $LOG_PATH
+echo "DB_URL: $DB_URL" >> $LOG_PATH
+echo "DB_USERNAME: $DB_USERNAME" >> $LOG_PATH
+
+echo ">>> 📂 JAR 복사 중..." >> $LOG_PATH
+cp $BUILD_JAR $DEPLOY_PATH
 
 DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
 echo ">>> 🚀 애플리케이션 실행: $DEPLOY_JAR" >> $LOG_PATH
