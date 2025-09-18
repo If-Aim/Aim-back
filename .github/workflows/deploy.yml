@@ -6,7 +6,7 @@ on:
 
 env:
   AWS_REGION: ap-northeast-2
-  # S3_BUCKET_NAME: mavve-deploy-bucket
+  S3_BUCKET_NAME: aim-internie-app.kro.kr
   CODE_DEPLOY_APPLICATION_NAME: aim-codedeploy-app
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: aim-codedeploy-deployment-group
 
@@ -44,10 +44,22 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Create deployment package
+        run: |
+          mkdir -p deploy-package
+          cp -r build/libs deploy-package/
+          cp -r scripts deploy-package/
+          cp -r src/main/resources deploy-package/src/main/
+          cp appspec.yml deploy-package/
+          cd deploy-package && zip -r ../deploy-package.zip .
+
+      - name: Upload to S3
+        run: |
+          aws s3 cp deploy-package.zip s3://$S3_BUCKET_NAME/deploy-package.zip
 
       - name: EC2에 배포
         run: >
           aws deploy create-deployment --application-name $CODE_DEPLOY_APPLICATION_NAME
           --deployment-config-name CodeDeployDefault.AllAtOnce
           --deployment-group-name $CODE_DEPLOY_DEPLOYMENT_GROUP_NAME
-          --github-location repository=$GITHUB_REPOSITORY,commitId=$GITHUB_SHA
+          --s3-location bucket=$S3_BUCKET_NAME,key=deploy-package.zip,bundleType=zip
