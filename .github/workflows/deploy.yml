@@ -46,21 +46,43 @@ jobs:
 
       - name: Create deployment package
         run: |
+          echo "🔍 빌드 결과 확인..."
+          ls -la build/libs/
+          
           mkdir -p deploy-package
-          cp -r build/libs deploy-package/
+          mkdir -p deploy-package/build
+          cp -r build/libs deploy-package/build/
           cp -r scripts deploy-package/
           mkdir -p deploy-package/src/main/
           cp -r src/main/resources deploy-package/src/main/
           cp appspec.yml deploy-package/
+          
+          echo "📦 배포 패키지 내용 확인..."
+          find deploy-package -type f -name "*.jar"
+          ls -la deploy-package/
+          ls -la deploy-package/build/libs/
+          
           cd deploy-package && zip -r ../deploy-package.zip .
 
       - name: Upload to S3
         run: |
           aws s3 cp deploy-package.zip s3://$S3_BUCKET_NAME/deploy-package.zip
+          echo "✅ S3 업로드 완료: s3://$S3_BUCKET_NAME/deploy-package.zip"
+
+      - name: Verify S3 upload
+        run: |
+          aws s3 ls s3://$S3_BUCKET_NAME/deploy-package.zip
+          echo "S3 파일 확인 완료"
 
       - name: EC2에 배포
-        run: >
-          aws deploy create-deployment --application-name $CODE_DEPLOY_APPLICATION_NAME
-          --deployment-config-name CodeDeployDefault.AllAtOnce
-          --deployment-group-name $CODE_DEPLOY_DEPLOYMENT_GROUP_NAME
-          --s3-location bucket=$S3_BUCKET_NAME,key=deploy-package.zip,bundleType=zip
+        run: |
+          echo "🚀 CodeDeploy 시작..."
+          echo "Application: $CODE_DEPLOY_APPLICATION_NAME"
+          echo "Deployment Group: $CODE_DEPLOY_DEPLOYMENT_GROUP_NAME"
+          echo "S3 Location: bucket=$S3_BUCKET_NAME,key=deploy-package.zip,bundleType=zip"
+          
+          aws deploy create-deployment \
+            --application-name $CODE_DEPLOY_APPLICATION_NAME \
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --deployment-group-name $CODE_DEPLOY_DEPLOYMENT_GROUP_NAME \
+            --s3-location bucket=$S3_BUCKET_NAME,key=deploy-package.zip,bundleType=zip
