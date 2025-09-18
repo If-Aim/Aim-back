@@ -6,6 +6,7 @@ import com.aim.auth.service.jwt.UserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
 @Configuration
 @EnableWebSecurity
@@ -64,6 +66,14 @@ public class SecurityConfig {
     // RestTemplate Bean 추가
     @Bean
     public RestTemplate restTemplate() {
-        return new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate();
+
+        // 타임아웃 설정
+        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+        factory.setConnectTimeout(5000);  // 연결 타임아웃: 5초
+        factory.setReadTimeout(10000);    // 읽기 타임아웃: 10초
+
+        restTemplate.setRequestFactory(factory);
+        return restTemplate;
     }
 }
