@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
 @Configuration
 @EnableWebSecurity
@@ -70,7 +71,7 @@ public class SecurityConfig {
         // 타임아웃 설정
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
         factory.setConnectTimeout(5000);  // 연결 타임아웃: 5초
-        factory.setReadTimeout(5000);     // 읽기 타임아웃: 5초
+        factory.setReadTimeout(10000);    // 읽기 타임아웃: 10초
 
         restTemplate.setRequestFactory(factory);
         return restTemplate;
