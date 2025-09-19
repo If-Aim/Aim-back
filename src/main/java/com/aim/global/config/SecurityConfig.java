@@ -31,6 +31,8 @@ public class SecurityConfig {
         http
                 // 요청 인가 규칙
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/error").permitAll()           // 에러 페이지 허용
+                        .requestMatchers("/login/**").permitAll()        // OAuth2 콜백 허용
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/auth/student/**").hasRole("STUDENT")
                         .requestMatchers("/auth/company/**").hasRole("COMPANY")
