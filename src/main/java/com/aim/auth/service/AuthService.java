@@ -133,7 +133,7 @@ public class AuthService {
         params.add("client_secret", googleClientSecret);
         params.add("code", code);
         params.add("grant_type", "authorization_code");
-        params.add("redirect_uri", "http://localhost:8080/login/oauth2/code/google");
+        params.add("redirect_uri", "https://aim-internie-app.kro.kr/login/oauth2/code/google");
         
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
