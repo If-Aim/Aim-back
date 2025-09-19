@@ -36,8 +36,33 @@ spring:
 jwt:
   secret:
     key: ${JWT_SECRET_KEY}
+
+# Thread starvation 방지를 위한 서버 및 스레드 풀 설정
+server:
+  tomcat:
+    threads:
+      max: 200          # 최대 스레드 수 (기본값: 200)
+      min-spare: 10     # 최소 유지 스레드 수 (기본값: 10)
+    accept-count: 100   # 큐에 대기할 수 있는 최대 연결 수 (기본값: 100)
+    max-connections: 8192  # 최대 동시 연결 수 (기본값: 8192)
+    connection-timeout: 20000  # 연결 타임아웃 (20초)
+    keep-alive-timeout: 20000  # Keep-Alive 타임아웃 (20초)
+  port:  8080
+
+# 데이터베이스 커넥션 풀 설정 (thread starvation 방지)
+  datasource:
+    hikari:
+      maximum-pool-size: 10      # 최대 DB 커넥션 수
+      minimum-idle: 5            # 최소 유지 커넥션 수
+      connection-timeout: 30000  # 커넥션 타임아웃 (30초)
+      idle-timeout: 600000       # 유휴 커넥션 타임아웃 (10분)
+      max-lifetime: 1800000      # 커넥션 최대 생존 시간 (30분)
+      leak-detection-threshold: 60000  # 커넥션 누수 감지 (60초)
+
 logging:
   level:
     org.springframework.security: TRACE
     org.springframework.web: DEBUG
+    com.zaxxer.hikari: INFO      # HikariCP 로깅
+    org.springframework.scheduling: INFO  # 스케줄링 로깅
 

@@ -15,7 +15,22 @@ CURRENT_PID=$(pgrep -f $JAR_NAME)
 if [ -n "$CURRENT_PID" ]; then
   echo ">>> 실행중인 프로세스 종료: $CURRENT_PID" >> $LOG_PATH
   kill -15 $CURRENT_PID
-  sleep 5
+  
+  # 프로세스 완전 종료 대기 (최대 30초)
+  for i in {1..30}; do
+    if ! kill -0 $CURRENT_PID 2>/dev/null; then
+      echo ">>> ✅ 프로세스 정상 종료됨 (${i}초 소요)" >> $LOG_PATH
+      break
+    fi
+    sleep 1
+  done
+  
+  # 강제 종료가 필요한 경우
+  if kill -0 $CURRENT_PID 2>/dev/null; then
+    echo ">>> ⚠️ 강제 종료 실행" >> $LOG_PATH
+    kill -9 $CURRENT_PID
+    sleep 2
+  fi
 else
   echo ">>> 실행중인 애플리케이션이 없습니다." >> $LOG_PATH
 fi
